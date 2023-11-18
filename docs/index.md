@@ -18,12 +18,6 @@ how we did it
 We first reduced our data to mediapipe landmarks
 
 
-
-
-<p style="font-family:'Courier New'">test: 0.658 <br> test2: 0.790 <br> test3: 0.658 <br> F1 test4: 0.691</p>
-
-
-
 ## Why is this important? 
 yes.
 
