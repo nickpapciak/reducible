@@ -5,22 +5,22 @@ layout: default
 <h1 align="center">Same Network, Half the Size</h1>
 
 
-## Motivation
+## motivation
 The sheer size of many deep learning models can be impractical for everyday use on devices with limited size and memory. However, being able to bring nearly accurate models but with half the space can be game changing for applications in mobile and edge computing, IoT devices, and the design of future models in general. 
 
 
-## How Do We Solve This?
+## how did we solve this?
 Overall description of our solution.  
   
-## More Details 
+## details 
 Math stuff... 
 
 
-## Takeaways
+## takeaways
 yes.
 
 
-## References
+## references
 
 
 
