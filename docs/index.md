@@ -2,23 +2,21 @@
 layout: default
 ---
 
-<h1 align="center">Same Network, Almost Half the Size</h1>
+<h1 align="center">Same Network, Half the Size</h1>
 
 
 ## Motivation
-Why we chose this...  
+The sheer size of many deep learning models can be impractical for everyday use on devices with limited size and memory. However, being able to bring nearly accurate models but with half the space can be game changing for applications in mobile and edge computing, IoT devices, and the design of future models in general. 
+
 
 ## How Do We Solve This?
-What we did...  
+Overall description of our solution.  
   
-## Methodology
-how we did it
-
-## Results
-We first reduced our data to mediapipe landmarks
+## More Details 
+Math stuff... 
 
 
-## Why is this important? 
+## Takeaways
 yes.
 
 
