@@ -14,7 +14,9 @@ Overall description of our solution.
   
 ## details 
 Math stuff... 
-
+$$5 + 2 \neq 6$$   (for display)
+\\[\geq\\] (also for display)
+\\(\leq\\) (for inline)
 
 ## takeaways
 yes.
