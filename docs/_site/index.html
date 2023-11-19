@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- katex -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.js" integrity="sha384-9Nhn55MVVN0/4OFx7EE5kpFBPsEMZxKTCnA+4fqDmg12eCTqGi6+BB2LjY8brQxJ" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>reducible | 2023 AI Hackathon Project</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="reducible" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="2023 AI Hackathon Project" />
+<meta property="og:description" content="2023 AI Hackathon Project" />
+<link rel="canonical" href="http://localhost:4000/" />
+<meta property="og:url" content="http://localhost:4000/" />
+<meta property="og:site_name" content="reducible" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="reducible" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","description":"2023 AI Hackathon Project","headline":"reducible","name":"reducible","url":"http://localhost:4000/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="icon" type="image/png" href="assets/img/favicon.ico">
+    <link rel="stylesheet" href="/assets/css/style.css?v=b85430da3095ff773e8041be88dcd16744ace598">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>reducible</h1>
+
+          <img src="assets/img/gato.jpg" alt="gato" />
+
+        <p>2023 AI Hackathon Project</p>
+
+        
+        <p class="view"><a href="https://github.com/nickpapciak/reducible">view the Project on GitHub <small>nickpapciak/reducible</small></a></p>
+        
+
+        
+
+        
+      </header>
+      <section>
+
+      <h1 align="center">Same Network, Half the Size</h1>
+
+<h2 id="what-is-reducible">what is <code class="language-plaintext highlighter-rouge">reducible</code>❓</h2>
+<p>Reducible compresses the parameters of a neural network using a lossy compression technique called rank-k approximation.</p>
+
+<h2 id="our-inspiration-">our inspiration 🤩</h2>
+<p>Our idea came from when the team was thinking about how awesome JPEG is. It is able to take your images, throw out a ton of the data, and yet reconstruct the image in a way that makes it seem nearly identical to the human eye. For this hackathon, we thought about how we could use this idea to compress not just images, but compress neural networks. The sheer size of many deep learning models can be impractical for everyday use on devices with limited size and memory. However, being able to bring nearly accurate models but with half the space can be game changing for applications in mobile and edge computing, IoT devices, and the design of future models in general.</p>
+
+<h2 id="how-we-built-it-️">how we built it 🛠️</h2>
+
+<p>We created a custom TensorFlow layer that acts similarly to a Dense layer but instead stores a rank-k approximation of the matrix.</p>
+
+<h2 id="challenges-">challenges 😰</h2>
+
+<p>Tensorflow had issues running on our Macs, so we had to use online compute power. We also had to make a custom file format for loading our compressed model because TensorFlow would not serialize our objects correctly.</p>
+
+<h2 id="results-">results 💪</h2>
+
+<p>Our network has ~66% fewer parameters while only suffering from a ~0.45% decrease in accuracy!</p>
+
+<h2 id="what-we-learned-">what we learned 🤓</h2>
+
+<p>We learned a great deal about the math behind SVD (singular value decomposition), as well as how to work with the TensorFlow backend API and make custom Layers. We also learned about object serialization and common space optimizations.</p>
+
+<h2 id="whats-next-">what’s next 🌎</h2>
+<p>Our current optimization algorithm assumes that a higher rank leads to a better approximation, which from our experimentation is mostly true, but isn’t necessarily always true. This ends up being an integer programming problem, which is NP hard, but we want to explore possible efficient algorithms.</p>
+
+<p>We also want to optimize our custom filetype with non-lossy serialization. Currently, our model has a predicted reduction of ~66%, while having an actual reduction of ~16%. This is because, although our compressed matrices have ~66% fewer parameters, we do not have the same serialization optimizations that TensorFlow includes that allows them to bring the filesize down so dramatically despite being unoptimized.</p>
+
+<p><br />
+<br /></p>
+
+<h1 id="deep-in-the-weeds-how-does-reducible-work">Deep In The Weeds: How does Reducible Work?</h1>
+<h2 id="what-are-we-doing-exactly">what are we doing exactly?</h2>
+<p>For every Dense layer in a TensorFlow network, we replace it with a custom layer where the weights are approximated by a rank-\(k\) matrix.</p>
+
+<h3 id="what-is-a-low-rank-approximation">what is a low-rank approximation?</h3>
+<p>An \(m \times n\) matrix can be decomposed into the product of two rank-k matrices. One has size \(m \times k\), while the other has size \(k \times n\). This converts a matrix which requires \(m\cdot n\) space to a series of matrices which requires \(k\cdot(m+n)\) space.</p>
+
+<h3 id="why-low-rank-matrix-approximations">why low-rank matrix approximations?</h3>
+<ol>
+  <li>Compression: a low-rank approximation provides a lossy compressed version of the matrix.</li>
+  <li>De-noising: if matrix \(A\) is a noisy version of some original datapoints with ‘good’ dataset which is approximately low-rank, then conducting an Low-rank matrix approximation can potentially remove noise</li>
+  <li>Matrix completion: Low-rank approximations offfer a first-cut approach to the matrix completion problem</li>
+</ol>
+
+<h3 id="how-can-we-compute-a-rank-k-approximation">how can we compute a rank-\(k\) approximation?</h3>
+
+<p>Thankfully, the Eckart–Young–Mirsky theorem gives us an answer. The low-rank solution is given by the truncated SVD, or singular value decomposition, where we decompose a matrix \(A\) into \({A = U \Sigma V^T}^{**}\). The SVD (specifically PCA) provides a way to represent a matrix in a more compact form by ordering the data in order of the ‘most significant’ components. Then, we …</p>
+
+<ol>
+  <li>express \(A\) in terms of its components ordered by their contribution to the model</li>
+  <li>keep only the \(k\) most high contributing components.</li>
+</ol>
+
+<p>If you truncate the matrices \(U\), \(\Sigma\), and \(V\) by keeping only the first \(k\) singular values (columns of \(U\), rows of \(V^T\), and diagonal entries of \(\Sigma\)), you get an approximation of the matrix.</p>
+
+<p>Every matrix A has an SVD, and it is unique. The columns of \(U\) and \(V\) form orthonormal bases for the domain and codomain of \(A\) and the singular values in \(\Sigma\) represent the scaling factors along the coordinate axes.</p>
+
+<p>** Where \(U\) is a \(m\times n\) orthogonal matrix, \(V\) is a \(n\times n\) orthogonal matrix, and $\Sigma$ is a \(m\times n\) diagonal amtrix with non-negative entries</p>
+
+<h2 id="challenges">challenges?</h2>
+<ul>
+  <li>Most neural networks are full-rank, so a rank-\(k\) approximation is a balancing act. If we make our matrices too small, we lose too much information. Furthermore, we haven’t implemented a learning algorithm so we cannot fine tune our layers.</li>
+  <li>What \(k\) do we use for each layer? This turns into a mixed-integer nonlinear optimization minimization problem (MINLP) over the values of \(k\) and the model accuracy, which is computationally costly to compute.</li>
+</ul>
+
+<h2 id="credits">credits</h2>
+
+<p>Sidebar image by catalyststuff <a href="https://www.freepik.com/free-vector/cute-cat-with-laptop-cartoon-vector-icon-illustration-animal-technology-icon-concept-isolated-premium-vector-flat-cartoon-style_18537593.htm#query=cute%20computer&amp;position=7&amp;from_view=search&amp;track=ais&amp;uuid=ad651732-f38b-4266-ae25-0602f214e1b0">on Freepik</a></p>
+
+<p>Tab image by catalyststuff<a href="https://www.freepik.com/free-vector/cute-cat-hole-cartoon-vector-icon-illustration-animal-nature-icon-concept-isolated-premium-vector-flat-cartoon-style_23006709.htm#query=cat&amp;position=18&amp;from_view=author&amp;uuid=e0bb35be-cd2a-4fb5-a1e7-f6e97ce0638b"> on Freepik</a></p>
+
+
+      </section>
+      <footer>
+        
+        <p>by Nick Papciak, Tom Jeong, and Sakshi Gandikota</a></p>
+        
+      </footer>
+    </div>
+    <script src="/assets/js/scale.fix.js"></script>
+  </body>
+</html>
