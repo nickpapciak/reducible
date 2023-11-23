@@ -1,9 +1,12 @@
-# reducible
+<h1 align="center">reducible</h1>
 
-![logo](https://nickpapciak.github.io/reducible/assets/img/gato.jpg "Logo")
+<p align="center">
+    <a href="url"><img src="https://nickpapciak.github.io/reducible/assets/img/gato.jpg" align="center" height="200" width="200" ></a>
+</p>
 
-- https://devpost.com/software/reducible
-- https://nickpapciak.github.io/reducible/
+    
+<p align="center">‣ https://devpost.com/software/reducible</p>
+<p align="center">‣ https://nickpapciak.github.io/reducible/</p>
 
 
 ## what is `reducible`❓
